@@ -6,6 +6,8 @@ import { ContactSection } from '@/components/contact-section';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageToggle } from '@/components/language-toggle';
 import { Footer } from '@/components/footer';
+import { generateDomainStructuredData, generateWebsiteStructuredData, generateOrganizationStructuredData } from './structured-data';
+import Script from 'next/script';
 
 export default function Home() {
   const [language, setLanguage] = useState<'en' | 'zh'>('en');
@@ -150,6 +152,17 @@ export default function Home() {
 
   return (
     <main className="container mx-auto px-4 py-8">
+      <Script id="structured-data" type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            generateWebsiteStructuredData(language),
+            generateOrganizationStructuredData(),
+            ...domains.map(domain => generateDomainStructuredData(domain, language))
+          ]
+        })}
+      </Script>
+
       <div className="flex justify-end space-x-4 mb-8">
         <LanguageToggle language={language} setLanguage={setLanguage} />
         <ThemeToggle />
