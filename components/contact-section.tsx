@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, MessageSquare, Send } from "lucide-react";
+import { Mail, MessageSquareMore, Send } from "lucide-react";
 import { useState, useEffect } from "react";
 import { 
   Dialog, 
@@ -18,11 +18,12 @@ interface ContactSectionProps {
     contactTitle: string;
     contactDescription: string;
   };
+  initialMessage?: string;
 }
 
-export function ContactSection({ language, contactText }: ContactSectionProps) {
+export function ContactSection({ language, contactText, initialMessage = '' }: ContactSectionProps) {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(initialMessage);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -31,6 +32,13 @@ export function ContactSection({ language, contactText }: ContactSectionProps) {
   useEffect(() => {
     emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual EmailJS public key
   }, []);
+
+  // Effect to update message when initialMessage changes
+  useEffect(() => {
+    if (initialMessage) {
+      setMessage(initialMessage);
+    }
+  }, [initialMessage]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,7 +54,7 @@ export function ContactSection({ language, contactText }: ContactSectionProps) {
         {
           from_email: email,
           message: message,
-          to_email: "onsell@xiangjianfeng.com"
+          to_email: "onsell@nipao.com"
         }
       );
       
@@ -112,27 +120,26 @@ export function ContactSection({ language, contactText }: ContactSectionProps) {
             <Mail className="h-6 w-6 text-primary mt-0.5" />
             <div>
               <h3 className="font-medium">{text.email}</h3>
-              <p className="text-muted-foreground">onsell@xiangjianfeng.com</p>
+              <p className="text-muted-foreground">onsell@nipao.com</p>
             </div>
           </div>
           
           <div className="flex items-start space-x-4">
-            <MessageSquare className="h-6 w-6 text-primary mt-0.5" />
+            <MessageSquareMore className="h-6 w-6 text-primary mt-0.5" />
             <div>
               <h3 className="font-medium">{text.wechat}</h3>
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary">
-                    YourDomainSales
+                    nipaocom
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
                   <DialogTitle className="text-lg font-medium mb-4">{text.scanQRCode}</DialogTitle>
                   <div className="text-center">
                     <div className="flex justify-center mb-4">
-                      {/* Replace with your actual WeChat QR code */}
                       <img 
-                        src="/wechat-qr.svg" 
+                        src="https://p.sda1.dev/22/c9014ffbaca52115078ef359a9ae0782/IMG_1822.jpg" 
                         alt="WeChat QR Code" 
                         className="w-64 h-64 border border-gray-200 rounded-md"
                       />

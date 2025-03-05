@@ -11,12 +11,17 @@ interface DomainCardProps {
   price: string;
   featured?: boolean;
   language: 'en' | 'zh';
+  onInquire: (domain: string, price: string) => void;
 }
 
-export function DomainCard({ domain, meaning, price, featured = false, language }: DomainCardProps) {
+export function DomainCard({ domain, meaning, price, featured = false, language, onInquire }: DomainCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   
   const buttonText = language === 'en' ? 'Inquire About This Domain' : '咨询此域名';
+
+  const handleInquire = () => {
+    onInquire(domain, price);
+  };
   
   return (
     <Card 
@@ -42,7 +47,7 @@ export function DomainCard({ domain, meaning, price, featured = false, language 
         <CardDescription className="text-base">{meaning}</CardDescription>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">{buttonText}</Button>
+        <Button className="w-full" onClick={handleInquire}>{buttonText}</Button>
       </CardFooter>
     </Card>
   );
